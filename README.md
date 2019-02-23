@@ -12,8 +12,7 @@ Evolution of ebola fever in the DRC.
 
 ## Data
 Thanks to 
-<p><i><b> - <a href="https://data.humdata.org/dataset/ebola-cases-and-deaths-drc-north-kivu">Humdata</a></b></i></p>
-<p><i><b> - Data_ DRC Ebola Outbreak, North Kivu and Ituri - MOH-By-Health-Zone.csv</b></i></p>
+<p><i><b> - <a href="https://data.humdata.org/dataset/ebola-cases-and-deaths-drc-north-kivu">Humdata</a></b></i><i>(Data_ DRC Ebola Outbreak, North Kivu and Ituri - MOH-By-Health-Zone.csv)</i></p>
 
 ## More about Visualization
 <div>
