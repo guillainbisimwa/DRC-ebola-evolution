@@ -1,1 +1,6 @@
 *.txt
+*.ipynb
+guy.py
+gdp-*
+__pycache__/
+.ipynb*
