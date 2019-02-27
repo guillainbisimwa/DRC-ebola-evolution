@@ -5,3 +5,4 @@ guy.py
 gdp-*
 __pycache__/
 .ipynb*
+env/
