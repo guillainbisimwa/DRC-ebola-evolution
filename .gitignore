@@ -6,3 +6,4 @@ gdp-*
 __pycache__/
 .ipynb*
 env/
+.vscode/
