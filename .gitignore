@@ -1,4 +1,5 @@
-*.txt
+details.txt
+draft.txt
 *.ipynb
 guy.py
 gdp-*
