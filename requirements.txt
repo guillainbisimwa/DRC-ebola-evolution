@@ -11,4 +11,4 @@ gunicorn==19.9.0
 heroku==0.1.4
 pandas==0.24.1
 plotly==3.6.1
-dateutil==2.5.0
+python-dateutil
