@@ -14,7 +14,12 @@ df = pd.read_csv(
 
 
 def generate_table(dataframe): #max_rows=5
-    dataframe = df[df.health_zone.str.match("Beni")]
+
+    dataframe = df[df.report_date.str.contains("2019-02-20")]
+    # dataframe[["confirmed_cases", "probable_cases"]] = dataframe[["confirmed_cases", "probable_cases"]].apply(pd.to_numeric)
+    dataframe = dataframe.astype({"confirmed_cases": int,"probable_cases": int})
+
+    # dataframe = df[df.health_zone.str.match("Beni")]
 
     return html.Table(
         # Header
@@ -157,7 +162,8 @@ app.layout = html.Div(children=[
         className="m-botm-20 mdl-layout__header mdl-color--pink-800"
     ),
 
-    #generate_table(df),
+    generate_table(df),
+    
     # gen("2018-11"),
     html.Section([
         html.Div([
@@ -171,9 +177,9 @@ app.layout = html.Div(children=[
             ),
             html.Div(id='datte-div'),
             html.P("\
-                The first graph allows you to see the situation at a desired date. \
+                The first graph allows you to see the situation at a selected date. \
                 And to understand which health zone is most affected in terms of confirmed cases \
-                and cases of death confirms.",
+                and death confirms cases.",
                     className="mdl-my-input"
                 ),
             ],
@@ -187,9 +193,9 @@ app.layout = html.Div(children=[
             # html.Label('Selectionner la datte',
             # className="mdl-cell mdl-cell--6-col"),
             dcc.Dropdown(
-                id='datte-id-2',
-                options=[{'label': report_mounth, 'value': report_mounth} for report_mounth in load_by_mounth()],
-                value='2019-02',
+                id='province-id-2',
+                options=[{'label': prvc, 'value': prvc} for prvc in df['province'].unique()],
+                value='North Kivu',
                 className="mdl-my-input"
             ),
             html.Div(id='datte-div-2'),
@@ -259,28 +265,60 @@ def selected_datte_output_div(selected_datte):
 # second question
 @app.callback(
     Output(component_id='datte-div-2', component_property='children'),
-    [Input(component_id='datte-id-2', component_property='value')]
+    [Input(component_id='province-id-2', component_property='value')]
 )
-def suspected_over_confirmed(selected_datte):
-    filtered_df = df[df.report_date.str.match(gen(selected_datte))]
+def suspected_over_confirmed(province):
+    filtered_df = df[df.province.str.match(province)]
+    #filtered_df = df
+    tab_sc = [] #suspected
+    tab_cc = [] # confirmed case
+    tab_cd = [] # death confirmed
+    for m in load_by_mounth():
+        # transform m to the last day of the month form
+        m_ = gen(m)
+        # filter result by the last day of the month
+        df_filtered_b_m = filtered_df[filtered_df.report_date.str.contains(m_)]
+        df_filtered_b_m = df_filtered_b_m.astype({"confirmed_cases": int,"probable_cases": int
+        ,"confirmed_deaths":int,"total_suspected_cases":int})
+
+        # sum all suspected cases
+        get_sum = df_filtered_b_m.sum(axis = 0, skipna = True)
+        print("--- {} --- ", format(m_))
+        print(df_filtered_b_m.sum(axis = 0, skipna = True))
+
+        print("+++ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        print(df_filtered_b_m.sum(axis = 0, skipna = True)["confirmed_cases"])
+        print("+++ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        # Append respectively data found to their structure or array
+        tab_cc.append(df_filtered_b_m.sum(axis = 0, skipna = True)["confirmed_cases"])
+        tab_sc.append(df_filtered_b_m.sum(axis = 0, skipna = True)["total_suspected_cases"])
+        tab_cd.append(df_filtered_b_m.sum(axis = 0, skipna = True)["confirmed_deaths"])
+
+
+        # sum all confirmed cases
     return (
         dcc.Graph(
             id='s-c-by-cd-graph',
             figure={
                 'data': [
                     {
-                        'x': [health_zone for health_zone in filtered_df["health_zone"]],
-                        'y': [cc for cc in filtered_df["total_suspected_cases"]],
-                        'type': 'lines', 'name': 'total_suspected_cases'
+                        'x': [load_by_mounth_ for load_by_mounth_ in load_by_mounth()],
+                        'y': [cc for cc in tab_cc],
+                        'type': 'lines', 'name': 'Confirmed cases'
                     },
                     {
-                        'x': [health_zone for health_zone in filtered_df["health_zone"]],
-                        'y': [cc for cc in filtered_df["confirmed_cases"]],
-                        'type': 'lines', 'name': 'confirmed_cases'
+                        'x': [load_by_mounth_ for load_by_mounth_ in load_by_mounth()],
+                        'y': [cd for cd in tab_cd],
+                        'type': 'lines', 'name': 'Confirmed deaths'
+                    },
+                     {
+                        'x': [load_by_mounth_ for load_by_mounth_ in load_by_mounth()],
+                        'y': [sc for sc in tab_sc],
+                        'type': 'area', 'name': 'Suspected cases'
                     }
                 ],
                 'layout': {
-                    'title': 'DRC Ebola Outbreak, North Kivu and Ituri - MOH-By-Health-Zone on {} mounth'.format(selected_datte)
+                    'title': 'DRC Ebola Outbreak, {} province'.format(province)
                 }
             }
         )
