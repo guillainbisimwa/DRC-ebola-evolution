@@ -1,7 +1,7 @@
 # DRC-ebola-evolution
-My work on the 3rd week of the DATA LIT course on the ep idemiological situation epidemiological situation of Ebola Virus Disease in the provinces of NORTH KIVU and ITURI (DRC).
+My work on the 3rd week of the DATA LIT course on the epidemiological situation of Ebola Virus Disease in the provinces of NORTH KIVU and ITURI (DRC).
 
-Thanks to the GENERAL MANAGEMENT OF THE DISEASE (DIRECTION GENERALE DE LUTTE CONTRE LA MALADIE).
+Thanks to the "DIRECTION GENERALE DE LUTTE CONTRE LA MALADIE".
 Thanks to <b>Dr. Oly Ilunga Kalenga</b>, <i>DRC's Minister of Health</i>, for making public the data on the evolution of the epidemiological situation of the Ebola Virus Disease.
 
 ## The epidemiological situation of the Ebola Virus Disease from 2018-08-04 to 2019-02-21

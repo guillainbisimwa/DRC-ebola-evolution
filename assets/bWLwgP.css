@@ -411,6 +411,10 @@ hr {
   width: 90%;
   padding: 20px;
 }
+.fleft{
+  float: left;
+  padding-top: 20px;
+}
 
 /* Media Queries
 –––––––––––––––––––––––––––––––––––––––––––––––––– */

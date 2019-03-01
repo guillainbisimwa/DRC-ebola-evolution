@@ -4,6 +4,7 @@ draft.txt
 guy.py
 gdp-*
 __pycache__/
-.ipynb*
+.ipynb
 env/
 .vscode/
+unused/
