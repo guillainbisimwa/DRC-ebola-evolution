@@ -34,8 +34,8 @@ def gen(selected_datte):
     # filtered_df = df[df.report_date.str.match(selected_datte)]
     dataframe = df[df.report_date.str.contains(selected_datte)]
     
-    #print(selected_datte)
-    print(" Hello :{}",dataframe['report_date'][dataframe.index[0]])
+    # print(selected_datte)
+    # print(" Hello :{}",dataframe['report_date'][dataframe.index[0]])
     return dataframe['report_date'][dataframe.index[0]]
     
 
@@ -50,72 +50,7 @@ def load_by_mounth():
             output.append(x)
     return output
 
-def test():
-    return html.Div([
-        html.H6("Hypothetical growth of $10,000",
-                className="gs-header gs-table-header padded"),
-        dcc.Graph(
-            id="grpah-2",
-            figure={
-                'data': [
-                    go.Bar(
-                        x = ["2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"],
-                        y = ["10000", "7500", "9000", "10000", "10500", "11000", "14000", "18000", "19000", "20500", "24000"],
-                        marker = {
-                            "color": "rgb(53, 83, 255)",
-                            "line": {
-                            "color": "rgb(255, 255, 255)",
-                            "width": 2
-                            }
-                                    },
-                        name = "500 Index Fund Inv"
-                    ),
-                    go.Scatter(
-                        x = ["2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"],
-                        y = ["1000", "1500", "8000", "10800", "10200", "11000", "1000", "8000", "12000", "20000", "4000"],
-                        line = {"color": "rgb(255, 83, 0)"},
-                        mode = "lines",
-                        name = "5Ala jjjjjj"
-                    )
-                ],
-                'layout': go.Layout(
-                    autosize = True,
-                    title = "",
-                    
-                    showlegend = True,
-                    xaxis = {
-                        "autorange": True,
-                        "linecolor": "rgb(0, 0, 0)",
-                        "linewidth": 1,
-                        "range": [2008, 2018],
-                        "showgrid": False,
-                        "showline": True,
-                        "title": "",
-                        "type": "linear"
-                    },
-                    yaxis = {
-                        "autorange": False,
-                        "gridcolor": "rgba(127, 127, 127, 0.2)",
-                        "mirror": False,
-                        "nticks": 4,
-                        "range": [0, 30000],
-                        "showgrid": True,
-                        "showline": True,
-                        "ticklen": 10,
-                        "ticks": "outside",
-                        "title": "$",
-                        "type": "linear",
-                        "zeroline": False,
-                        "zerolinewidth": 4
-                    }
-                )
-            },
-            config={
-                'displayModeBar': False
-            }
-        )
-    ])
-    
+
 def result_over_time():
     return (
         dcc.Graph(
@@ -136,6 +71,85 @@ def result_over_time():
             }
         )
     )
+
+def final_stat():
+    # filter df by province
+    #take the last day
+    filtered_df = df[df.report_date == df['report_date'][df.index[1]]]
+    filtered_df_nk = filtered_df[filtered_df.province == "North Kivu"]
+
+    filtered_df_it = filtered_df[filtered_df.province == "Ituri"]
+    # print(filtered_df_nk)
+    # print(filtered_df_nk["confirmed_cases"])
+    # sum all confirmed case
+    filtered_df_nk = filtered_df_nk.astype({"confirmed_cases": int,"probable_cases": int
+        ,"confirmed_deaths":int,"total_suspected_cases":int})
+
+    filtered_df_it = filtered_df_it.astype({"confirmed_cases": int,"probable_cases": int
+        ,"confirmed_deaths":int,"total_suspected_cases":int})
+        # sum all suspected cases
+    get_sum_nk = filtered_df_nk.sum(axis = 0, skipna = True)
+    get_sum_it = filtered_df_it.sum(axis = 0, skipna = True)
+    # the same to sc
+
+    data_nk= [
+        {
+            'values': [get_sum_nk["confirmed_cases"], get_sum_nk["confirmed_deaths"]],
+            'type': 'pie',
+            'labels': ['N-K Confirmed cases ','N-K Confirmed deaths'],
+            'textfont': {'size': 20}
+     
+        },
+    ]
+
+    data_it = [
+        {
+            'values': [get_sum_it["confirmed_cases"], get_sum_it["confirmed_deaths"]],
+            'type': 'pie',
+            'labels': ['Ituri Confirmed cases','Ituri Confirmed deaths'],
+            'textfont': {'size': 20}
+     
+        },
+    ]
+
+    return html.Div([
+        html.Div([
+            dcc.Graph(
+                id='graph1',
+                figure={
+                    'data': data_nk,
+                    'layout': {
+                        'margin': {
+                            'l': 30,
+                            'r': 0,
+                            'b': 30,
+                            't': 0
+                        },
+                        'legend': {'x': 0, 'y': 1}
+                    }
+                },
+                className="fleft mdl-cell--6-col"
+            ),
+        ]),
+        html.Div([
+            dcc.Graph(
+                id='graph2',
+                figure={
+                    'data': data_it,
+                    'layout': {
+                        'margin': {
+                            'l': 30,
+                            'r': 0,
+                            'b': 30,
+                            't': 0
+                        },
+                        'legend': {'x': 0, 'y': 1}
+                    }
+                },
+                className="fleft mdl-cell--6-col"
+            )
+        ])
+    ])
 
 external_scripts = [
     'assets/material.min.js'
@@ -162,7 +176,7 @@ app.layout = html.Div(children=[
         className="m-botm-20 mdl-layout__header mdl-color--pink-800"
     ),
 
-    generate_table(df),
+    # generate_table(df),
     
     # gen("2018-11"),
     html.Section([
@@ -223,7 +237,7 @@ app.layout = html.Div(children=[
     # ),
     html.Section([
         html.Div([
-            test(),
+            final_stat(),
             ],
             className="mdl-card mdl-cell mdl-cell--12-col"
         ),
@@ -283,12 +297,12 @@ def suspected_over_confirmed(province):
 
         # sum all suspected cases
         get_sum = df_filtered_b_m.sum(axis = 0, skipna = True)
-        print("--- {} --- ", format(m_))
-        print(df_filtered_b_m.sum(axis = 0, skipna = True))
+        #print("--- {} --- ", format(m_))
+        #print(df_filtered_b_m.sum(axis = 0, skipna = True))
 
-        print("+++ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        print(df_filtered_b_m.sum(axis = 0, skipna = True)["confirmed_cases"])
-        print("+++ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        #print("+++ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        #print(df_filtered_b_m.sum(axis = 0, skipna = True)["confirmed_cases"])
+        #print("+++ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         # Append respectively data found to their structure or array
         tab_cc.append(df_filtered_b_m.sum(axis = 0, skipna = True)["confirmed_cases"])
         tab_sc.append(df_filtered_b_m.sum(axis = 0, skipna = True)["total_suspected_cases"])
