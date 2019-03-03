@@ -11,6 +11,23 @@ df2 = pd.read_csv(
 
 df = pd.read_csv(
     'Data_ DRC Ebola Outbreak, North Kivu and Ituri - MOH-By-Health-Zone.csv')
+    # publication_date,
+    # report_date,
+    # country,
+    # province,
+    # health_zone,
+    
+    # confirmed_cases_change,
+    # probable_cases_change,
+    # total_cases_change,
+    
+    # confirmed_deaths_change,
+    # total_deaths_change,
+    # total_suspected_cases_change,
+    # source,
+df_clean = df.drop(columns=['publication_date', 'report_date','country', 'province','health_zone', 'confirmed_cases_change',
+'probable_cases_change', 'total_cases_change','confirmed_deaths_change', 'total_deaths_change','total_suspected_cases_change', 'source'])
+
 
 
 def generate_table(dataframe): #max_rows=5
@@ -71,6 +88,36 @@ def result_over_time():
             }
         )
     )
+def result_all_in_one():
+    filtered_df = df[df.report_date == "2019-02-20"]
+    return (
+        dcc.Graph(
+            id='life-exp-vs-gdp',
+            figure={
+                'data': [
+                    go.Scatter(
+                        x=filtered_df[filtered_df['province'] == i]['total_cases'],
+                        y=filtered_df[filtered_df['province'] == i]['confirmed_deaths'],
+                        text=filtered_df[filtered_df['province'] == i]['health_zone'],
+                        mode='markers',
+                        opacity=0.7,
+                        marker={
+                            'size': 15,
+                            'line': {'width': 0.5, 'color': 'white'}
+                        },
+                        name=i
+                    ) for i in df.province.unique()
+                ],
+                'layout': go.Layout(
+                    xaxis={'type': 'log', 'title': 'GDP Per Capita'},
+                    yaxis={'title': 'Life Expectancy'},
+                    margin={'l': 40, 'b': 40, 't': 10, 'r': 10},
+                    legend={'x': 0, 'y': 1},
+                    hovermode='closest'
+                )
+            }
+        )
+    )
 
 def final_stat():
     # filter df by province
@@ -98,7 +145,6 @@ def final_stat():
             'type': 'pie',
             'labels': ['N-K Confirmed cases ','N-K Confirmed deaths'],
             'textfont': {'size': 20}
-     
         },
     ]
 
@@ -244,6 +290,56 @@ app.layout = html.Div(children=[
         ],
         className="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp my_section"
     ),
+
+    html.Section([
+        html.Div([
+            html.Div([
+                html.Div([
+                    html.Label('Select one or more provinces'),
+                    dcc.Dropdown(
+                        id='province-column',
+                        options=[{'label': i, 'value': i} for i in df["province"].unique()[1:]],
+                        value= [i for i in df["province"].unique()[1:]],
+                        multi=True
+                    )
+                ],
+                style={'width': '28%', 'float': 'left', 'display': 'inline-block','margin':'2%'}),
+
+                html.Div([
+                    html.Label('Choisir un element'),
+                    dcc.Dropdown(
+                        id='1axis-column',
+                        options=[{'label': column, 'value': column} for column in df_clean.columns],
+                        value='confirmed_cases'
+                    )
+                ],style={'width': '28%', 'float': 'left', 'display': 'inline-block','margin':'2%'}),
+
+                html.Div([
+                    html.Label('Choisir deuxiem element'),
+                    dcc.Dropdown(
+                        id='2axis-column',
+                        options=[{'label': column, 'value': column} for column in df_clean.columns],
+                        value='confirmed_deaths'
+                    )
+                ],style={'width': '28%', 'float': 'left', 'display': 'inline-block','margin':'2%'})
+            ]),
+
+            html.Div(id='indicator-graphic'),
+            
+            dcc.Slider(
+                id='month-slider',
+                min=0,
+                max=len(load_by_mounth())-2,
+                marks=[load_by_mounth_ for load_by_mounth_ in reversed(load_by_mounth())],
+                value=len(load_by_mounth())-2,
+                className='mdl-pad-to-bottom-30'
+            ),
+            ],
+            className="mdl-card mdl-cell mdl-cell--12-col"
+        ),
+    ],
+        className="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp my_section"
+    ),
 ],
 className="mdl-color--grey-100")
 
@@ -297,13 +393,7 @@ def suspected_over_confirmed(province):
 
         # sum all suspected cases
         get_sum = df_filtered_b_m.sum(axis = 0, skipna = True)
-        #print("--- {} --- ", format(m_))
-        #print(df_filtered_b_m.sum(axis = 0, skipna = True))
-
-        #print("+++ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        #print(df_filtered_b_m.sum(axis = 0, skipna = True)["confirmed_cases"])
-        #print("+++ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        # Append respectively data found to their structure or array
+       
         tab_cc.append(df_filtered_b_m.sum(axis = 0, skipna = True)["confirmed_cases"])
         tab_sc.append(df_filtered_b_m.sum(axis = 0, skipna = True)["total_suspected_cases"])
         tab_cd.append(df_filtered_b_m.sum(axis = 0, skipna = True)["confirmed_deaths"])
@@ -333,6 +423,56 @@ def suspected_over_confirmed(province):
                 ],
                 'layout': {
                     'title': 'DRC Ebola Outbreak, {} province'.format(province)
+                }
+            }
+        )
+    )
+
+@app.callback(
+    Output(component_id='indicator-graphic', component_property='children'),
+    [
+        Input(component_id='province-column', component_property='value'),
+        Input(component_id='1axis-column', component_property='value'),
+        Input(component_id='2axis-column', component_property='value'),
+        Input(component_id='month-slider', component_property='value')
+    ]
+)
+def update_graph(province_clbk,axis_column1,axis_column2,month_slider):
+
+    print(axis_column1)
+    print(axis_column2)
+    print(month_slider)
+
+    print()
+    print(load_by_mounth()[len(load_by_mounth()) - month_slider - 1])
+    print(len(load_by_mounth()))
+
+    filtered_df = df[df['province'].isin(province_clbk)]
+   
+
+    # transform m to the last day of the month form
+    m_ = gen(load_by_mounth()[len(load_by_mounth()) - month_slider - 1])
+    # filter result by the last day of the month
+    filtered_df = filtered_df[filtered_df.report_date.str.contains(m_)]
+    
+    return (
+        dcc.Graph(
+            id='cc-by-cd-graph1',
+            figure={
+                'data': [
+                    {
+                        'x': [health_zone for health_zone in filtered_df["health_zone"]],
+                        'y': [cc for cc in filtered_df[""+axis_column1]],
+                        'type': 'bar', 'name': ''+axis_column1
+                    },
+                    {
+                        'x': [health_zone for health_zone in filtered_df["health_zone"]],
+                        'y': [cc for cc in filtered_df[""+axis_column2]],
+                        'type': 'bar', 'name': ''+axis_column2
+                    }
+                ],
+                'layout': {
+                    'title': 'DRC Ebola Outbreak, North Kivu and Ituri - MOH-By-Health-Zone on {}'.format(province_clbk)
                 }
             }
         )

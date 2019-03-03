@@ -397,6 +397,12 @@ hr {
   margin-bottom: 30px;
   text-align: center;
 }
+.mdl-pad-to-bottom-30 {
+  width: 80%;
+  display: block;
+  margin: auto;
+  padding-bottom: 50px;
+}
 .mdl-my-input {
   width: 50%;
   margin: auto;
