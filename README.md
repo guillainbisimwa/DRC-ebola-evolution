@@ -1,24 +1,53 @@
-# DRC-ebola-evolution
-My work on the 3rd week of the DATA LIT course on the epidemiological situation of Ebola Virus Disease in the provinces of NORTH KIVU and ITURI (DRC).
-
-Thanks to the "DIRECTION GENERALE DE LUTTE CONTRE LA MALADIE".
-Thanks to <b>Dr. Oly Ilunga Kalenga</b>, <i>DRC's Minister of Health</i>, for making public the data on the evolution of the epidemiological situation of the Ebola Virus Disease.
-
-## The epidemiological situation of the Ebola Virus Disease from 2018-08-04 to 2019-02-21
+# The epidemiological situation of the Ebola Virus Disease from 2018-08-04 to 2019-02-21
  
-I will show you the cumulated cases, confirmed cases and probable cases since the beginning of the epidemic. I will also show you the total deaths (confirmed and probable).
-You will also see suspicious cases under investigation;
+<p>This simple project demostrates the utility of data science. I chose personally
+to study the evolution of the ebola outbreak that has been occurring in the north-east of the DRC since August 2018.</p>
+<p>Unfortunately many people have lost their lives.
+I really encourage all those who are willing to provide their efforts day and night to
+stop this outbreak. And for all those who want to know whether or not the danger is growing up, this can be your quick reference.</p>
 
-## Data
-Thanks to 
-<p><i><b> - <a href="https://data.humdata.org/dataset/ebola-cases-and-deaths-drc-north-kivu">Humdata </a></b></i></p>
+<p>Thanks to <a href='https://twitter.com/OlyIlunga'>Dr. Oly Ilunga Kalenga</a>, <i>DRC's Minister of Health</i>, for making available the data of this outbreak.
+The data I'am using here, comes from this website https://data.humdata.org/dataset/ebola-cases-and-deaths-drc-north-kivu
+and the sources are added daily on https://mailchi.mp/sante.gouv.cd/ </p>
+<p>My last update here is 2019-02-28.</p>
+<p>This source code is free of any improvements or even suggestions for improvement.
+For anyone who can contribute, I will be really happy.</p>
 
-## More about Visualization
-<div>
-<p><!-- react-text: 933 -->The <!-- /react-text --><code>dash_core_components</code><!-- react-text: 935 --> library includes a component called <!-- /react-text --><code>Graph</code><!-- react-text: 937 -->.<!-- /react-text --></p><p><code>Graph</code><!-- react-text: 940 --> renders interactive data visualizations using the open source
-<!-- /react-text --><a href="https://github.com/plotly/plotly.js"><!-- react-text: 942 -->plotly.js<!-- /react-text --></a><!-- react-text: 943 --> JavaScript graphing
-library. Plotly.js supports over 35 chart types and renders charts in
-both vector-quality SVG and high-performance WebGL.<!-- /react-text --></p><p><!-- react-text: 945 -->The <!-- /react-text --><code>figure</code><!-- react-text: 947 --> argument in the <!-- /react-text --><code>dash_core_components.Graph</code><!-- react-text: 949 --> component is
-the same <!-- /react-text --><code>figure</code><!-- react-text: 951 --> argument that is used by <!-- /react-text --><code>plotly.py</code><!-- react-text: 953 -->, Plotly's
-open source Python graphing library.
-Check out the <!-- /react-text --><a href="https://plot.ly/python"><!-- react-text: 955 -->plotly.py documentation and gallery<!-- /react-text --></a> to learn more.</p></div>
+# MY QUESTIONS
+<p>I will try to answer four questions</p>
+
+<p>
+
+## FIRST QUESTION
+Do you want to see what were the daily situation of health areas
+in terms of confirmed cases and confirmed death?</p>
+<p>
+
+## SECOND QUESTION
+Do you want to see the number of people with Ebola per provinve per month, confirmed by the laboratory?
+</p>
+<p>
+
+## THIRD QUESTION
+What is the proportion of confirmed deaths compared to confirmed cases?</p>
+<p>
+
+## FOURTH QUESTION
+Is there a way to customize the data?
+</p>
+
+# System Requirements
+You will need: 
+<p>- Create a virtual environment, go to your project’s directory and run virtualenv.</p>
+<ul>
+<li><code>python3 -m virtualenv env</code></li>
+<li><code>source env/bin/activate</code></li>
+</ul>
+
+See my <a href='https://github.com/guillainbisimwa/DRC-ebola-evolution/blob/master/requirements.txt'>requirements.</a>
+
+# Final result
+The final result was deployed to heroku
+Check the link: https://drc-ebola-outbreak.herokuapp.com/
+
+## Screenshots

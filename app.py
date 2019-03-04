@@ -4,39 +4,20 @@ import dash_html_components as html
 import pandas as pd
 from dash.dependencies import Input, Output
 import plotly.graph_objs as go
-import math
 
 df2 = pd.read_csv(
     'Data_ DRC.1.csv')
 
 df = pd.read_csv(
     'Data_ DRC Ebola Outbreak, North Kivu and Ituri - MOH-By-Health-Zone.csv')
-    # publication_date,
-    # report_date,
-    # country,
-    # province,
-    # health_zone,
-    
-    # confirmed_cases_change,
-    # probable_cases_change,
-    # total_cases_change,
-    
-    # confirmed_deaths_change,
-    # total_deaths_change,
-    # total_suspected_cases_change,
-    # source,
+
 df_clean = df.drop(columns=['publication_date', 'report_date','country', 'province','health_zone', 'confirmed_cases_change',
 'probable_cases_change', 'total_cases_change','confirmed_deaths_change', 'total_deaths_change','total_suspected_cases_change', 'source'])
 
-
-
-def generate_table(dataframe): #max_rows=5
+def generate_table(dataframe):
 
     dataframe = df[df.report_date.str.contains("2019-02-20")]
-    # dataframe[["confirmed_cases", "probable_cases"]] = dataframe[["confirmed_cases", "probable_cases"]].apply(pd.to_numeric)
     dataframe = dataframe.astype({"confirmed_cases": int,"probable_cases": int})
-
-    # dataframe = df[df.health_zone.str.match("Beni")]
 
     return html.Table(
         # Header
@@ -48,14 +29,9 @@ def generate_table(dataframe): #max_rows=5
         ]) for i in range(min(len(dataframe), len(dataframe)))]
     )
 def gen(selected_datte):
-    # filtered_df = df[df.report_date.str.match(selected_datte)]
     dataframe = df[df.report_date.str.contains(selected_datte)]
-    
-    # print(selected_datte)
-    # print(" Hello :{}",dataframe['report_date'][dataframe.index[0]])
     return dataframe['report_date'][dataframe.index[0]]
     
-
 #load df ordered by month
 def load_by_mounth():
     df_m = []
@@ -126,8 +102,6 @@ def final_stat():
     filtered_df_nk = filtered_df[filtered_df.province == "North Kivu"]
 
     filtered_df_it = filtered_df[filtered_df.province == "Ituri"]
-    # print(filtered_df_nk)
-    # print(filtered_df_nk["confirmed_cases"])
     # sum all confirmed case
     filtered_df_nk = filtered_df_nk.astype({"confirmed_cases": int,"probable_cases": int
         ,"confirmed_deaths":int,"total_suspected_cases":int})
@@ -216,26 +190,28 @@ app.layout = html.Div(children=[
 
     # header
     html.Div([
-        html.H3("The epidemiological situation of the Ebola Virus (DRC) from 2018-08-04 to 2019-02-21", 
+        html.H3("The outbreak situation of the Ebola Virus (DRC) from 2018-08-04 to 2019-02-28", 
         className='mdl-layout--large-screen-only mdl-pad-to-bottom-50'),
         ],
         className="m-botm-20 mdl-layout__header mdl-color--pink-800"
     ),
 
     # generate_table(df),
-    
-    # gen("2018-11"),
+
     html.Section([
         html.Div([
-            # html.Label('Selectionner la datte',
-            # className="mdl-cell mdl-cell--6-col"),
             dcc.Dropdown(
                 id='datte-id',
                 options=[{'label': report_date, 'value': report_date} for report_date in df['report_date'].unique()],
-                value='2019-02-20',
+                value='2019-02-27',
                 className="mdl-my-input"
             ),
             html.Div(id='datte-div'),
+            html.P("\
+                Do you want to see what were the daily situation of health areas\
+                in terms of confirmed cases and confirmed death?",
+                    className="mdl-my-input qst"
+                ),
             html.P("\
                 The first graph allows you to see the situation at a selected date. \
                 And to understand which health zone is most affected in terms of confirmed cases \
@@ -250,8 +226,6 @@ app.layout = html.Div(children=[
     ),
     html.Section([
         html.Div([
-            # html.Label('Selectionner la datte',
-            # className="mdl-cell mdl-cell--6-col"),
             dcc.Dropdown(
                 id='province-id-2',
                 options=[{'label': prvc, 'value': prvc} for prvc in df['province'].unique()],
@@ -260,9 +234,14 @@ app.layout = html.Div(children=[
             ),
             html.Div(id='datte-div-2'),
             html.P("\
-                COmment ebola a evoluer eau mois de janvier 2048\
-                blalllaa\
-                blaaaa.",
+                Do you want to see the number of people with Ebola per provinve per month,\
+                confirmed by the laboratory?",
+                    className="mdl-my-input qst"
+                ),
+            html.P("\
+                Here we see the cumulative confirmed cases,\
+                the monthly cumulative confirmed deaths,and\
+                the monthly cumulative suspected cases.",
                     className="mdl-my-input"
                 ),
             ],
@@ -272,21 +251,26 @@ app.layout = html.Div(children=[
         className="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp my_section"
     ),
 
-    # html.Section([
-    #     html.Div([
-    #         result_over_time(),
-    #         ],
-    #         className="mdl-card mdl-cell mdl-cell--12-col"
-    #     ),
-    #     ],
-    #     className="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp my_section"
-    # ),
     html.Section([
         html.Div([
             final_stat(),
+            html.P("\
+                What is the proportion of confirmed deaths compared to confirmed cases?",
+                    className="mdl-my-input qst"
+                ),
+            html.P("\
+                On the left I show you the report of confirmed deaths compared to confirmed cases\
+                of the North Kivu province.\
+                On the right I show you the report of confirmed deaths compared to confirmed \
+                cases of the Ituri province.\
+                Only you can see in which province has there been much more deaths \
+                compared to the confirmed cases.",
+                    className="mdl-my-input"
+                ),
             ],
             className="mdl-card mdl-cell mdl-cell--12-col"
         ),
+        
         ],
         className="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp my_section"
     ),
@@ -306,7 +290,7 @@ app.layout = html.Div(children=[
                 style={'width': '28%', 'float': 'left', 'display': 'inline-block','margin':'2%'}),
 
                 html.Div([
-                    html.Label('Choisir un element'),
+                    html.Label('Chose the first case'),
                     dcc.Dropdown(
                         id='1axis-column',
                         options=[{'label': column, 'value': column} for column in df_clean.columns],
@@ -315,7 +299,7 @@ app.layout = html.Div(children=[
                 ],style={'width': '28%', 'float': 'left', 'display': 'inline-block','margin':'2%'}),
 
                 html.Div([
-                    html.Label('Choisir deuxiem element'),
+                    html.Label('Chose the second case'),
                     dcc.Dropdown(
                         id='2axis-column',
                         options=[{'label': column, 'value': column} for column in df_clean.columns],
@@ -438,23 +422,12 @@ def suspected_over_confirmed(province):
     ]
 )
 def update_graph(province_clbk,axis_column1,axis_column2,month_slider):
-
-    print(axis_column1)
-    print(axis_column2)
-    print(month_slider)
-
-    print()
-    print(load_by_mounth()[len(load_by_mounth()) - month_slider - 1])
-    print(len(load_by_mounth()))
-
     filtered_df = df[df['province'].isin(province_clbk)]
    
-
     # transform m to the last day of the month form
     m_ = gen(load_by_mounth()[len(load_by_mounth()) - month_slider - 1])
     # filter result by the last day of the month
     filtered_df = filtered_df[filtered_df.report_date.str.contains(m_)]
-    
     return (
         dcc.Graph(
             id='cc-by-cd-graph1',
