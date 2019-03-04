@@ -51,3 +51,9 @@ The final result was deployed to heroku
 Check the link: https://drc-ebola-outbreak.herokuapp.com/
 
 ## Screenshots
+<div>
+<img style='width:20%; float:left, margin:1%' src='https://github.com/guillainbisimwa/DRC-ebola-evolution/blob/master/assets/sc1.png' />
+<img style='width:20%; float:left, margin:1%' src='https://github.com/guillainbisimwa/DRC-ebola-evolution/blob/master/assets/sc2.png' />
+<img style='width:20%; float:left, margin:1%' src='https://github.com/guillainbisimwa/DRC-ebola-evolution/blob/master/assets/sc3.png' />
+<img style='width:20%; float:left, margin:1%' src='https://github.com/guillainbisimwa/DRC-ebola-evolution/blob/master/assets/sc4.png' />
+</div>
