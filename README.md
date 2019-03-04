@@ -1,5 +1,5 @@
-# The epidemiological situation of the Ebola Virus Disease from 2018-08-04 to 2019-02-21
- 
+# The outbreak situation of the Ebola Virus 
+
 <p>This simple project demostrates the utility of data science. I chose personally
 to study the evolution of the ebola outbreak that has been occurring in the north-east of the DRC since August 2018.</p>
 <p>Unfortunately many people have lost their lives.
@@ -18,21 +18,21 @@ For anyone who can contribute, I will be really happy.</p>
 
 <p>
 
-## FIRST QUESTION
+### FIRST QUESTION
 Do you want to see what were the daily situation of health areas
 in terms of confirmed cases and confirmed death?</p>
 <p>
 
-## SECOND QUESTION
+### SECOND QUESTION
 Do you want to see the number of people with Ebola per provinve per month, confirmed by the laboratory?
 </p>
 <p>
 
-## THIRD QUESTION
+### THIRD QUESTION
 What is the proportion of confirmed deaths compared to confirmed cases?</p>
 <p>
 
-## FOURTH QUESTION
+### FOURTH QUESTION
 Is there a way to customize the data?
 </p>
 
