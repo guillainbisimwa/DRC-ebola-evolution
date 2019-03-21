@@ -234,7 +234,7 @@ app.layout = html.Div(children=[
             ),
             html.Div(id='datte-div-2'),
             html.P("\
-                Do you want to see the number of people with Ebola per provinve per month,\
+                Do you want to see the number of people with Ebola per province per month,\
                 confirmed by the laboratory?",
                     className="mdl-my-input qst"
                 ),
