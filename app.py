@@ -16,7 +16,7 @@ df_clean = df.drop(columns=['publication_date', 'report_date','country', 'provin
 
 def generate_table(dataframe):
 
-    dataframe = df[df.report_date.str.contains("2019-06-18")]
+    dataframe = df[df.report_date.str.contains("2019-07-11")]
     dataframe = dataframe.astype({"confirmed_cases": int,"probable_cases": int})
 
     return html.Table(
@@ -65,7 +65,7 @@ def result_over_time():
         )
     )
 def result_all_in_one():
-    filtered_df = df[df.report_date == "2019-06-18"]
+    filtered_df = df[df.report_date == "2019-07-11"]
     return (
         dcc.Graph(
             id='life-exp-vs-gdp',
@@ -190,7 +190,7 @@ app.layout = html.Div(children=[
 
     # header
     html.Div([
-        html.H3("The outbreak situation of the Ebola Virus (DRC) from 2018-08-04 to 2019-06-18", 
+        html.H3("The outbreak situation of the Ebola Virus (DRC) from 2018-08-04 to 2019-07-11", 
         className='mdl-layout--large-screen-only mdl-pad-to-bottom-50'),
         ],
         className="m-botm-20 mdl-layout__header mdl-color--pink-800"
