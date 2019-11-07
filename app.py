@@ -16,7 +16,7 @@ df_clean = df.drop(columns=['publication_date', 'report_date','country', 'provin
 
 def generate_table(dataframe):
 
-    dataframe = df[df.report_date.str.contains("2019-11-04")]
+    dataframe = df[df.report_date.str.contains("2019-11-03")]
     dataframe = dataframe.astype({"confirmed_cases": int,"probable_cases": int})
 
     return html.Table(
@@ -65,7 +65,7 @@ def result_over_time():
         )
     )
 def result_all_in_one():
-    filtered_df = df[df.report_date == "2019-11-04"]
+    filtered_df = df[df.report_date == "2019-11-03"]
     return (
         dcc.Graph(
             id='life-exp-vs-gdp',
@@ -203,7 +203,7 @@ app.layout = html.Div(children=[
             dcc.Dropdown(
                 id='datte-id',
                 options=[{'label': report_date, 'value': report_date} for report_date in df['report_date'].unique()],
-                value='2019-11-04',
+                value='2019-11-03',
                 className="mdl-my-input"
             ),
             html.Div(id='datte-div'),
