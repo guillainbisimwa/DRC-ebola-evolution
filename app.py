@@ -203,7 +203,7 @@ app.layout = html.Div(children=[
             dcc.Dropdown(
                 id='datte-id',
                 options=[{'label': report_date, 'value': report_date} for report_date in df['report_date'].unique()],
-                value='2019-06-18',
+                value='2019-11-04',
                 className="mdl-my-input"
             ),
             html.Div(id='datte-div'),
@@ -350,7 +350,7 @@ def selected_datte_output_div(selected_datte):
                     }
                 ],
                 'layout': {
-                    'title': 'DRC Ebola Outbreak, North Kivu and Ituri - MOH-By-Health-Zone on {}'.format(selected_datte)
+                    'title': 'DRC Ebola Outbreak, North Kivu, Ituri and south Kivu - MOH-By-Health-Zone on {}'.format(selected_datte)
                 }
             }
         )
@@ -445,7 +445,7 @@ def update_graph(province_clbk,axis_column1,axis_column2,month_slider):
                     }
                 ],
                 'layout': {
-                    'title': 'DRC Ebola Outbreak, North Kivu and Ituri - MOH-By-Health-Zone on {}'.format(province_clbk)
+                    'title': 'DRC Ebola Outbreak, North Kivu, Ituri and south Kivu - MOH-By-Health-Zone on {}'.format(province_clbk)
                 }
             }
         )
