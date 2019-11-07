@@ -102,15 +102,22 @@ def final_stat():
     filtered_df_nk = filtered_df[filtered_df.province == "North Kivu"]
 
     filtered_df_it = filtered_df[filtered_df.province == "Ituri"]
+
+    filtered_df_sk = filtered_df[filtered_df.province == "South Kivu"]
     # sum all confirmed case
     filtered_df_nk = filtered_df_nk.astype({"confirmed_cases": int,"probable_cases": int
         ,"confirmed_deaths":int,"total_suspected_cases":int})
 
     filtered_df_it = filtered_df_it.astype({"confirmed_cases": int,"probable_cases": int
         ,"confirmed_deaths":int,"total_suspected_cases":int})
+
+    filtered_df_sk = filtered_df_sk.astype({"confirmed_cases": int,"probable_cases": int
+        ,"confirmed_deaths":int,"total_suspected_cases":int})
+
         # sum all suspected cases
     get_sum_nk = filtered_df_nk.sum(axis = 0, skipna = True)
     get_sum_it = filtered_df_it.sum(axis = 0, skipna = True)
+    get_sum_sk = filtered_df_sk.sum(axis = 0, skipna = True)
     # the same to sc
 
     data_nk= [
@@ -132,6 +139,16 @@ def final_stat():
         },
     ]
 
+    data_sk = [
+        {
+            'values': [get_sum_sk["confirmed_cases"], get_sum_sk["confirmed_deaths"]],
+            'type': 'pie',
+            'labels': ['S-K Confirmed cases','S-K Confirmed deaths'],
+            'textfont': {'size': 20}
+     
+        },
+    ]
+
     return html.Div([
         html.Div([
             dcc.Graph(
@@ -148,7 +165,7 @@ def final_stat():
                         'legend': {'x': 0, 'y': 1}
                     }
                 },
-                className="fleft mdl-cell--6-col"
+                className="fleft mdl-cell--4-col"
             ),
         ]),
         html.Div([
@@ -166,7 +183,25 @@ def final_stat():
                         'legend': {'x': 0, 'y': 1}
                     }
                 },
-                className="fleft mdl-cell--6-col"
+                className="fleft mdl-cell--4-col"
+            )
+        ]),
+        html.Div([
+            dcc.Graph(
+                id='graph2',
+                figure={
+                    'data': data_sk,
+                    'layout': {
+                        'margin': {
+                            'l': 30,
+                            'r': 0,
+                            'b': 30,
+                            't': 0
+                        },
+                        'legend': {'x': 0, 'y': 1}
+                    }
+                },
+                className="fleft mdl-cell--4-col"
             )
         ])
     ])
