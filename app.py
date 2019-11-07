@@ -317,8 +317,8 @@ app.layout = html.Div(children=[
                     html.Label('Select one or more provinces'),
                     dcc.Dropdown(
                         id='province-column',
-                        options=[{'label': i, 'value': i} for i in df["province"].unique()[1:]],
-                        value= [i for i in df["province"].unique()[1:]],
+                        options=[{'label': i, 'value': i} for i in df["province"].unique()[0:]],
+                        value= [i for i in df["province"].unique()[0:]],
                         multi=True
                     )
                 ],
