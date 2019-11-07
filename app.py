@@ -188,7 +188,7 @@ def final_stat():
         ]),
         html.Div([
             dcc.Graph(
-                id='graph2',
+                id='graph3',
                 figure={
                     'data': data_sk,
                     'layout': {
