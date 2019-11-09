@@ -16,7 +16,7 @@ df_clean = df.drop(columns=['publication_date', 'report_date','country', 'provin
 
 def generate_table(dataframe):
 
-    dataframe = df[df.report_date.str.contains("2019-03-12")]
+    dataframe = df[df.report_date.str.contains("2019-11-06")]
     dataframe = dataframe.astype({"confirmed_cases": int,"probable_cases": int})
 
     return html.Table(
@@ -65,7 +65,7 @@ def result_over_time():
         )
     )
 def result_all_in_one():
-    filtered_df = df[df.report_date == "2019-03-12"]
+    filtered_df = df[df.report_date == "2019-11-06"]
     return (
         dcc.Graph(
             id='life-exp-vs-gdp',
@@ -102,15 +102,22 @@ def final_stat():
     filtered_df_nk = filtered_df[filtered_df.province == "North Kivu"]
 
     filtered_df_it = filtered_df[filtered_df.province == "Ituri"]
+
+    filtered_df_sk = filtered_df[filtered_df.province == "South Kivu"]
     # sum all confirmed case
     filtered_df_nk = filtered_df_nk.astype({"confirmed_cases": int,"probable_cases": int
         ,"confirmed_deaths":int,"total_suspected_cases":int})
 
     filtered_df_it = filtered_df_it.astype({"confirmed_cases": int,"probable_cases": int
         ,"confirmed_deaths":int,"total_suspected_cases":int})
+
+    filtered_df_sk = filtered_df_sk.astype({"confirmed_cases": int,"probable_cases": int
+        ,"confirmed_deaths":int,"total_suspected_cases":int})
+
         # sum all suspected cases
     get_sum_nk = filtered_df_nk.sum(axis = 0, skipna = True)
     get_sum_it = filtered_df_it.sum(axis = 0, skipna = True)
+    get_sum_sk = filtered_df_sk.sum(axis = 0, skipna = True)
     # the same to sc
 
     data_nk= [
@@ -132,6 +139,16 @@ def final_stat():
         },
     ]
 
+    data_sk = [
+        {
+            'values': [get_sum_sk["confirmed_cases"], get_sum_sk["confirmed_deaths"]],
+            'type': 'pie',
+            'labels': ['S-K Confirmed cases','S-K Confirmed deaths'],
+            'textfont': {'size': 20}
+     
+        },
+    ]
+
     return html.Div([
         html.Div([
             dcc.Graph(
@@ -148,7 +165,7 @@ def final_stat():
                         'legend': {'x': 0, 'y': 1}
                     }
                 },
-                className="fleft mdl-cell--6-col"
+                className="fleft mdl-cell--4-col"
             ),
         ]),
         html.Div([
@@ -166,7 +183,25 @@ def final_stat():
                         'legend': {'x': 0, 'y': 1}
                     }
                 },
-                className="fleft mdl-cell--6-col"
+                className="fleft mdl-cell--4-col"
+            )
+        ]),
+        html.Div([
+            dcc.Graph(
+                id='graph3',
+                figure={
+                    'data': data_sk,
+                    'layout': {
+                        'margin': {
+                            'l': 30,
+                            'r': 0,
+                            'b': 30,
+                            't': 0
+                        },
+                        'legend': {'x': 0, 'y': 1}
+                    }
+                },
+                className="fleft mdl-cell--4-col"
             )
         ])
     ])
@@ -190,7 +225,7 @@ app.layout = html.Div(children=[
 
     # header
     html.Div([
-        html.H3("The outbreak situation of the Ebola Virus (DRC) from 2018-08-04 to 2019-03-12", 
+        html.H3("The outbreak situation of the Ebola Virus (DRC) from 2018-08-04 to 2019-11-07", 
         className='mdl-layout--large-screen-only mdl-pad-to-bottom-50'),
         ],
         className="m-botm-20 mdl-layout__header mdl-color--pink-800"
@@ -203,7 +238,7 @@ app.layout = html.Div(children=[
             dcc.Dropdown(
                 id='datte-id',
                 options=[{'label': report_date, 'value': report_date} for report_date in df['report_date'].unique()],
-                value='2019-03-12',
+                value='2019-11-06',
                 className="mdl-my-input"
             ),
             html.Div(id='datte-div'),
@@ -227,14 +262,14 @@ app.layout = html.Div(children=[
     html.Section([
         html.Div([
             dcc.Dropdown(
-                id='province-id-2',
+                id='province-idd-2',
                 options=[{'label': prvc, 'value': prvc} for prvc in df['province'].unique()],
                 value='North Kivu',
                 className="mdl-my-input"
             ),
-            html.Div(id='datte-div-2'),
+            html.Div(id='datte-divv-2'),
             html.P("\
-                Do you want to see the number of people with Ebola per provinve per month,\
+                Do you want to see the number of people with Ebola per province per month,\
                 confirmed by the laboratory?",
                     className="mdl-my-input qst"
                 ),
@@ -261,8 +296,10 @@ app.layout = html.Div(children=[
             html.P("\
                 On the left I show you the report of confirmed deaths compared to confirmed cases\
                 of the North Kivu province.\
-                On the right I show you the report of confirmed deaths compared to confirmed \
+                On the middle I show you the report of confirmed deaths compared to confirmed \
                 cases of the Ituri province.\
+                On the right I show you the report of confirmed deaths compared to confirmed \
+                cases of the South Kivu province.\
                 Only you can see in which province has there been much more deaths \
                 compared to the confirmed cases.",
                     className="mdl-my-input"
@@ -282,8 +319,8 @@ app.layout = html.Div(children=[
                     html.Label('Select one or more provinces'),
                     dcc.Dropdown(
                         id='province-column',
-                        options=[{'label': i, 'value': i} for i in df["province"].unique()[1:]],
-                        value= [i for i in df["province"].unique()[1:]],
+                        options=[{'label': i, 'value': i} for i in df["province"].unique()[0:]],
+                        value= [i for i in df["province"].unique()[0:]],
                         multi=True
                     )
                 ],
@@ -350,7 +387,7 @@ def selected_datte_output_div(selected_datte):
                     }
                 ],
                 'layout': {
-                    'title': 'DRC Ebola Outbreak, North Kivu and Ituri - MOH-By-Health-Zone on {}'.format(selected_datte)
+                    'title': 'DRC Ebola Outbreak, North Kivu, Ituri and south Kivu - MOH-By-Health-Zone on {}'.format(selected_datte)
                 }
             }
         )
@@ -358,8 +395,8 @@ def selected_datte_output_div(selected_datte):
 
 # second question
 @app.callback(
-    Output(component_id='datte-div-2', component_property='children'),
-    [Input(component_id='province-id-2', component_property='value')]
+    Output(component_id='datte-divv-2', component_property='children'),
+    [Input(component_id='province-idd-2', component_property='value')]
 )
 def suspected_over_confirmed(province):
     filtered_df = df[df.province.str.match(province)]
@@ -383,7 +420,7 @@ def suspected_over_confirmed(province):
         tab_cd.append(df_filtered_b_m.sum(axis = 0, skipna = True)["confirmed_deaths"])
 
 
-        # sum all confirmed cases
+    # sum all confirmed cases
     return (
         dcc.Graph(
             id='s-c-by-cd-graph',
@@ -445,7 +482,7 @@ def update_graph(province_clbk,axis_column1,axis_column2,month_slider):
                     }
                 ],
                 'layout': {
-                    'title': 'DRC Ebola Outbreak, North Kivu and Ituri - MOH-By-Health-Zone on {}'.format(province_clbk)
+                    'title': 'DRC Ebola Outbreak, North Kivu, Ituri and south Kivu - MOH-By-Health-Zone on {}'.format(province_clbk)
                 }
             }
         )
