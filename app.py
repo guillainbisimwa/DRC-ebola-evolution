@@ -364,34 +364,6 @@ app.layout = html.Div(children=[
 ],
 className="mdl-color--grey-100")
 
-@app.callback(
-    Output(component_id='datte-div', component_property='children'),
-    [Input(component_id='datte-id', component_property='value')]
-)
-def selected_datte_output_div(selected_datte):
-    filtered_df = df[df.report_date == selected_datte]
-    return (
-        dcc.Graph(
-            id='cc-by-cd-graph',
-            figure={
-                'data': [
-                    {
-                        'x': [health_zone for health_zone in filtered_df["health_zone"]],
-                        'y': [cc for cc in filtered_df["confirmed_cases"]],
-                        'type': 'bar', 'name': 'Confirmed cases'
-                    },
-                    {
-                        'x': [health_zone for health_zone in filtered_df["health_zone"]],
-                        'y': [cc for cc in filtered_df["confirmed_deaths"]],
-                        'type': 'bar', 'name': 'Confirmed deaths'
-                    }
-                ],
-                'layout': {
-                    'title': 'DRC Ebola Outbreak, North Kivu, Ituri and south Kivu - MOH-By-Health-Zone on {}'.format(selected_datte)
-                }
-            }
-        )
-    )
 
 # second question
 @app.callback(
@@ -448,6 +420,38 @@ def suspected_over_confirmed(province):
             }
         )
     )
+
+
+@app.callback(
+    Output(component_id='datte-div', component_property='children'),
+    [Input(component_id='datte-id', component_property='value')]
+)
+def selected_datte_output_div(selected_datte):
+    filtered_df = df[df.report_date == selected_datte]
+    return (
+        dcc.Graph(
+            id='cc-by-cd-graph',
+            figure={
+                'data': [
+                    {
+                        'x': [health_zone for health_zone in filtered_df["health_zone"]],
+                        'y': [cc for cc in filtered_df["confirmed_cases"]],
+                        'type': 'bar', 'name': 'Confirmed cases'
+                    },
+                    {
+                        'x': [health_zone for health_zone in filtered_df["health_zone"]],
+                        'y': [cc for cc in filtered_df["confirmed_deaths"]],
+                        'type': 'bar', 'name': 'Confirmed deaths'
+                    }
+                ],
+                'layout': {
+                    'title': 'DRC Ebola Outbreak, North Kivu, Ituri and south Kivu - MOH-By-Health-Zone on {}'.format(selected_datte)
+                }
+            }
+        )
+    )
+
+
 
 @app.callback(
     Output(component_id='indicator-graphic', component_property='children'),
