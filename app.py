@@ -329,9 +329,7 @@ className="mdl-color--grey-100")
 
 @app.callback(
     Output(component_id='datte-div', component_property='children'),
-    [Input(component_id='datte-id', component_property='value')],
-    Output(component_id='datte-div-2', component_property='children'),
-    [Input(component_id='province-id-2', component_property='value')]
+    [Input(component_id='datte-id', component_property='value')]
 )
 def selected_datte_output_div(selected_datte):
     filtered_df = df[df.report_date == selected_datte]
@@ -358,11 +356,11 @@ def selected_datte_output_div(selected_datte):
         )
     )
 
-# # second question
-# @app.callback(
-#     Output(component_id='datte-div-2', component_property='children'),
-#     [Input(component_id='province-id-2', component_property='value')]
-# )
+# second question
+@app.callback(
+    Output(component_id='datte-div-2', component_property='children'),
+    [Input(component_id='province-id-2', component_property='value')]
+)
 def suspected_over_confirmed(province):
     filtered_df = df[df.province.str.match(province)]
     #filtered_df = df
