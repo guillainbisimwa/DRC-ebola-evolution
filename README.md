@@ -1,13 +1,13 @@
 # The outbreak situation of the Ebola Virus 
 
-<p>This simple project demostrates the utility of data science. I chose personally
-to study the evolution of the ebola outbreak that has been occurring in the north-east of the DRC since August 2018.</p>
+<p>This simple project demonstrates the utility of data science. I chose personally
+to study the evolution of the Ebola outbreak that has been occurring in the north-east of the DRC since August 2018.</p>
 <p>Unfortunately many people have lost their lives.
 I really encourage all those who are willing to provide their efforts day and night to
 stop this outbreak. And for all those who want to know whether or not the danger is growing up, this can be your quick reference.</p>
 
 <p>Thanks to <a href='https://twitter.com/OlyIlunga'>Dr. Oly Ilunga Kalenga</a>, <i>ex DRC's Minister of Health</i>, for making available the data of this outbreak.
-The data I'am using here, comes from this website https://data.humdata.org/dataset/ebola-cases-and-deaths-drc-north-kivu
+The data I'm using here comes from this website https://data.humdata.org/dataset/ebola-cases-and-deaths-drc-north-kivu
 and the sources are added daily on https://mailchi.mp/sante.gouv.cd/ </p>
 <p>My last update here is 2019-11-04.</p>
 <p>This source code is free of any improvements or even suggestions for improvement.
@@ -24,7 +24,7 @@ in terms of confirmed cases and confirmed death?</p>
 <p>
 
 ### SECOND QUESTION
-Do you want to see the number of people with Ebola per provinve per month, confirmed by the laboratory?
+Do you want to see the number of people with Ebola per province per month, confirmed by the laboratory?
 </p>
 <p>
 
@@ -47,7 +47,7 @@ You will need:
 See my <a href='https://github.com/guillainbisimwa/DRC-ebola-evolution/blob/master/requirements.txt'>requirements.</a>
 
 # Final result
-The final result was deployed to heroku
+The final result was deployed to Heroku
 Check the link: https://drc-ebola-outbreak.herokuapp.com/
 
 ## Screenshots
