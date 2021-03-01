@@ -61,3 +61,25 @@ Check the link: https://drc-ebola-outbreak.herokuapp.com/
 <div style="width:20%; float:left, margin:1%">
     <img src='https://github.com/guillainbisimwa/DRC-ebola-evolution/blob/master/assets/sc4.png' /></div>
 </div>
+
+## Author
+
+👤 **Guillain Bisimwa**
+
+- Github : [@guillainbisimwa](https://github.com/guillainbisimwa)
+- Twitter : [@gullain_bisimwa](https://twitter.com/gullain_bisimwa)
+- Linkedin : [guillain-bisimwa](https://www.linkedin.com/in/guillain-bisimwa-8a8b7a7b/)
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome!
+
+Feel free to check the [issues page](https://github.com/guillainbisimwa/DRC-ebola-evolution/issues).
+
+## Show your support
+
+Give a ⭐️ if you like this project!
+
+## 📝 License
+
+This project is [MIT](lic.url) licensed.
